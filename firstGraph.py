@@ -1,5 +1,6 @@
 #!/usr/bin/env python
-from manimlib import *
+from manim import *
+from manim.utils.file_ops import open_file as open_media_file
 import numpy as np
 
 # To watch one of these scenes, run the following:
@@ -12,16 +13,15 @@ import numpy as np
 class DiscreteNewGraph(Scene):
     def construct(self):
         axes = Axes((-5, 5), (-1, 5))
-        axes.add_coordinate_labels()
 
         self.play(Write(axes, lag_ratio=0.01, run_time=1))
 
-        x_2 = axes.get_graph(
+        x_2 = axes.plot(
             lambda x: x*x,
             color = BLUE
         )
 
-        x_4 = axes.get_graph(
+        x_4 = axes.plot(
             lambda x: (x-1)*(x-1)*(x+1)*(x+1),
             color = BLUE
         )
@@ -45,7 +45,7 @@ class DiscreteNewGraph(Scene):
 
 
         self.play(
-            ShowCreation(x_2),
+            Create(x_2),
             FadeIn(x_2_label),
             FadeIn(dot_group, scale=0.5),
         )
@@ -78,12 +78,12 @@ class NewGraph(Scene):
 
         self.play(Write(axes, lag_ratio=0.01, run_time=1))
 
-        x_2 = axes.get_graph(
+        x_2 = axes.plot(
             lambda x: x*x,
             color = BLUE
         )
 
-        x_4 = axes.get_graph(
+        x_4 = axes.plot(
             lambda x: (x-1)*(x-1)*(x+1)*(x+1),
             color = BLUE
         )
@@ -97,7 +97,7 @@ class NewGraph(Scene):
 
 
         self.play(
-            ShowCreation(x_2),
+            Create(x_2),
             FadeIn(x_2_label),
         )
 
@@ -112,3 +112,7 @@ class NewGraph(Scene):
         self.wait()
 
 
+if __name__ == "__main__":
+    scene = DiscreteNewGraph()
+    scene.render()
+    open_media_file(scene.renderer.file_writer.movie_file_path)
