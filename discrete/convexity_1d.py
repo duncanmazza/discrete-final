@@ -23,7 +23,6 @@ class Convexity1D(Scene):
         dot_group = VGroup()
         dot = Dot(color=RED)
         dot.move_to(axes_white.c2p(0, 0))
-        dots = []
         dots_x = np.arange(-5, 5, 1)
         dots_midpoint = len(dots_x) // 2
         dots_y = parabola_default(dots_x)
@@ -31,7 +30,6 @@ class Convexity1D(Scene):
             new_dot = Dot(color=RED)
             new_dot.move_to(axes_white.c2p(dots_x[i], dots_y[i]))
             dot_group.add(new_dot)
-            dots.append(new_dot)
         tex = manim.Tex(r"$f : \mathbb{Z} \to \mathbb{R}$", color=manim.RED)
         tex.move_to(manim.RIGHT * (-4) + manim.DOWN * 2.5)
         self.play(
@@ -50,7 +48,7 @@ class Convexity1D(Scene):
 
         int_line_prev = None
         int_line_intersections_prev = None
-        for midpoint_offsets in [(-1, 3), (-4, 2), (-4, 4)]:
+        for midpoint_offsets in [(-1, 3), (-4, 4), (-4, 2)]:
             int_line_x_left = dots_midpoint + midpoint_offsets[0]
             int_line_x_right = dots_midpoint + midpoint_offsets[1]
 
