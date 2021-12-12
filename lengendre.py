@@ -221,7 +221,7 @@ class Lengendre2(Scene):
 
 
         words4 = Tex("""
-            Now consider the tangent line at x=1.25 \\\\ The tangent has a slope of 3.49 \\\\ and a y intercept of -.52
+            Now consider the tangent line at x=1.25 \\\\ The tangent has a slope of 3.49 \\\\ and a y intercept of -.87
         """, font_size=30)
         words4.to_corner(UL)
 
@@ -299,9 +299,9 @@ class Lengendre2(Scene):
         def label3_position(mobject):
             mobject[1].set_value(np.e ** alpha.get_value())
             mobject[3].set_value(-np.e ** alpha.get_value() * alpha.get_value() +  np.e ** alpha.get_value())
-            mobject.next_to(dot_axes, DOWN + RIGHT)
+            mobject.next_to(dot_axes, DOWN)
 
-        label3 = VGroup(Text("(", font_size=35), DecimalNumber(), Text(", ", font_size=35), DecimalNumber(), Text(" )", font_size=35),)
+        label3 = VGroup(Text("(", font_size=35, should_center=False), DecimalNumber(), Text(", ", font_size=35, should_center=False), DecimalNumber(), Text("  )", font_size=35, should_center=False))
         label3.arrange(RIGHT)
         label3.add_updater(label3_position)
         self.add(label3)
@@ -679,7 +679,6 @@ class Lengendre4(Scene):
 
         self.play(
             FadeTransform(words2, words3),
-
         )
 
 
@@ -697,3 +696,274 @@ class Lengendre4(Scene):
         )
 
         self.wait()
+
+
+
+class Lengendre5(Scene):
+    def construct(self):
+        axes = Axes((-5, 5), (-1, 5))
+        # axes.add_coordinate_labels()
+
+        self.play(Write(axes, lag_ratio=0.01, run_time=1))
+
+        x_2 = axes.plot(
+            lambda x: (x-1)**2 * (x+1)**2,
+            color = BLUE
+        )
+
+        x_2_label = axes.get_graph_label(x_2, "(x-1)^2 (x+1)^2", direction = RIGHT)
+
+        words = Tex("""
+            Now let's look at the transform\\\\ and the double transform of \\\\$(x-1)^2 (x+1)^2$\\\\ 
+        """, font_size=30)
+        words.to_corner(UL)
+
+        self.play(
+            Create(x_2),
+
+            FadeIn(x_2_label),
+
+            FadeIn(words),
+        )
+
+        self.wait(3)
+
+        def slope(x):
+            return 4*x*(x**2-1)
+
+        def func(x):
+            return (x-1)**2 * (x+1)**2
+
+
+
+        alpha = ValueTracker(-1.5)
+
+        def transformed_position(mobject):
+            mobject.move_to(axes.c2p(slope(alpha.get_value()), -slope(alpha.get_value()) * alpha.get_value() +  func(alpha.get_value())))
+
+        def transformed_position2(mobject):
+            mobject.move_to(axes.c2p(0, -slope(alpha.get_value()) * alpha.get_value() +  func(alpha.get_value())))
+
+        def transformed_position3(mobject):
+            mobject.move_to(axes.c2p(alpha.get_value(), func(alpha.get_value())))
+
+        def transformed_position4(mobject):
+            mobject.move_to(axes.c2p(slope(alpha.get_value()), slope(alpha.get_value()) * alpha.get_value() -  func(alpha.get_value())))
+
+        def transformed_position5(mobject):
+            if -slope(alpha.get_value()) * alpha.get_value() +  func(alpha.get_value()) < 0:
+                mobject.move_to(axes.c2p(slope(alpha.get_value()), slope(alpha.get_value()) * alpha.get_value() -  func(alpha.get_value())))
+            else:
+                mobject.move_to(axes.c2p(0,0))
+
+        def transformed_position6(mobject):
+            x = alpha.get_value()
+            if x < -1 or x > 1:
+                mobject.move_to(axes.c2p(x, func(x)))
+            else:
+                mobject.move_to(axes.c2p(x,0))
+
+
+        first_transform = Dot(axes.c2p(0,0), color=RED)
+        first_transform.add_updater(transformed_position5)
+
+        first_trace = TracedPath(first_transform.get_center, stroke_color=RED)
+
+        second_transform = Dot(axes.c2p(0,0), color=GREEN)
+        second_transform.add_updater(transformed_position6)
+
+        second_trace = TracedPath(second_transform.get_center, stroke_color=GREEN)
+
+
+        self.add(first_transform, first_trace, second_transform, second_trace)
+        alpha.set_value(-2)
+
+        label1 = axes.get_graph_label(x_2, "f^{\cdot}(x)", direction = RIGHT + DOWN*2, color = RED)
+        label2 = axes.get_graph_label(x_2, "f^{\cdot \cdot}(x)", direction = RIGHT + DOWN*5, color = GREEN)
+
+        self.add(label1, label2)
+        self.play(
+            # FadeOut(trace),
+            alpha.animate.set_value(2), run_time = 5, rate_func=rate_functions.linear)
+
+
+        words2 = Tex("""
+            The first lengendre transform is a convex\\\\ function with a discontinuous derivative \\\\ The second lengendre transform is \\\\ the largest convex function that \\\\ is smaller than f(x)
+        """, font_size=30)
+        words2.to_corner(UL)
+
+        self.play(
+            FadeTransform(words, words2),
+
+        )
+
+
+
+    
+
+        self.wait()
+
+
+class Lengendre6(Scene):
+    def construct(self):
+
+        
+        lines = VGroup(
+            Tex("""
+                The technical definition of the lengendre-fenchel transform is \\\\
+            """, font_size=30),
+            Tex("""
+                $f^\cdot(p) = sup\{px - f(x) | x \in \mathbb{R}\} (p \in \mathbb{R})$ \\\\
+            """, font_size=30),
+            Tex("""
+                or for discrete functions \\\\
+            """, font_size=30),
+            Tex("""
+                $f^\cdot(p) = sup\{px - f(x) | x \in \mathbb{Z}\} (p \in \mathbb{Z})$ \\\\
+            """, font_size=30),
+
+            Tex("""
+                This transform has several unique properties which make it useful in functional analysis\\\\ 
+            """, font_size=30)
+        )
+
+        lines.arrange(DOWN, buff=LARGE_BUFF)
+
+        self.play(
+            FadeIn(lines),
+        )
+
+
+class Lengendre7(Scene):
+    def construct(self):
+
+        
+        lines = VGroup(
+            Tex("""
+                1. The lengendre-fenchel transform of a function is convex\\\\
+            """, font_size=30),
+            Tex("""
+                2. If a function is convex it is equal to its double lengendre-fenchel transform\\\\
+            """, font_size=30),
+            Tex("""
+                3. If a function is not convex its double lengendre-fenchel transform is \\\\
+                the largest function which is pointwise-dominated by the function
+            """, font_size=30),
+            # Tex("""
+            #     $f^\cdot(p) = sup\{px - f(x) | x \in \mathbb{Z}\} (p \in \mathbb{R})$ \\\\
+            # """, font_size=30),
+
+            # Tex("""
+            #     This transform has several unique properties which make it useful in functional analysis\\\\ 
+            # """, font_size=30)
+        )
+
+        lines.arrange(DOWN, buff=LARGE_BUFF)
+
+        self.play(
+            FadeIn(lines[0]),
+        )
+        self.wait(3)
+
+        self.play(
+            FadeIn(lines[1]),
+        )
+        self.wait(3)
+
+        self.play(
+            FadeIn(lines[2]),
+        )
+        self.wait(3)
+
+
+class Lengendre8(Scene):
+    def construct(self):
+
+        axes = Axes((-5, 5), (-1, 5))
+        # axes.add_coordinate_labels()
+
+        self.play(Write(axes, lag_ratio=0.01, run_time=1))
+
+        x_2 = axes.plot(
+            lambda x: (x/2-1)**2 * (x/2+1)**2,
+            color = BLUE
+        )
+
+        x_2_label = axes.get_graph_label(x_2, "(x/2-1)^2 (x/2+1)^2 ", direction = RIGHT)
+
+
+        x_2l = axes.plot(
+            lambda x: (x/2-1)**2 * (x/2+1)**2 if x > 2 or x < -2 else 0,
+            color = RED
+        )
+
+        x_2l_label = axes.get_graph_label(x_2, "f ^{\cdot \cdot}(x)", direction = RIGHT + 5*DOWN, color = RED)
+
+
+        words = Tex("""
+            What does it mean to be pointwise dominated?\\\\ 
+        """, font_size=30)
+        words.to_corner(UL)
+
+
+
+        self.play(
+            Create(x_2),
+
+            FadeIn(x_2_label),
+
+            FadeIn(words),
+        )
+
+        self.wait(1)
+
+        words2 = Tex("""
+            At every point the function is as large as it\\\\ can be while still being less than or equal \\\\ to f(x) and convex
+        """, font_size=30)
+        words2.to_corner(UL)
+
+        self.play(
+            Create(x_2l),
+
+            FadeIn(x_2l_label),
+            FadeTransform(words, words2),
+        )
+
+
+        x_points_list = [Dot(point = axes.c2p(x, (x/2-1)**2 * (x/2+1)**2), color = BLUE) for x in range (-5,5)]
+        x_points = VGroup(*x_points_list)
+
+        def f_2(x):
+            return (x/2-1)**2 * (x/2+1)**2
+
+        x_lines_list = [Line(start=axes.c2p(x, f_2(x)), end=axes.c2p(x+1, f_2(x+1)), color = BLUE) for x in range (-6,5)]
+        x_lines = VGroup(*x_lines_list)
+
+        def f(x):
+            return (x/2-1)**2 * (x/2+1)**2 if x > 2 or x < -2 else 0
+
+        xl_points_list = [Dot(point = axes.c2p(x, f(x)), color = RED, radius = .15) for x in range (-5,5)]
+        xl_points = VGroup(*xl_points_list)
+
+        self.wait(5)
+
+        words3 = Tex("""
+            The same is true in a discrete context \\\\ Every point will be as close to f(x) \\\\ as possible while remaining convex
+        """, font_size=30)
+        words3.to_corner(UL)
+
+
+
+
+        self.play(
+            FadeOut(x_2),
+            FadeOut(x_2l),
+            FadeIn(xl_points),
+            FadeIn(x_points),
+            FadeIn(x_lines),
+            FadeTransform(words2, words3),
+        )
+
+        self.wait()
+
+        
