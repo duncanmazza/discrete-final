@@ -30,6 +30,8 @@ class Conv3D(ThreeDScene):
             Create(parabola_surf_blue)
         )
 
+        self.wait(2)
+
         dots_dict = {}
         dots = VGroup()
         for u in range(-Conv3D.parabola_range, Conv3D.parabola_range + 1):
@@ -40,13 +42,8 @@ class Conv3D(ThreeDScene):
                 dots_dict[(u, v)] = new_dot
 
         map_comain_codomain_tex = Tex(r"$f : \mathbb{Z}^2 \to \mathbb{R}$", color=RED)
-        map_comain_codomain_tex.move_to(RIGHT * (-4) + DOWN * 2.5)
+        map_comain_codomain_tex.to_corner(DL)
         self.add_fixed_in_frame_mobjects(map_comain_codomain_tex)
-
-        self.play(
-            FadeIn(dots),
-            Write(map_comain_codomain_tex)
-        )
 
         parabola_surf_red = Surface(
             parabola_3d,
@@ -56,9 +53,14 @@ class Conv3D(ThreeDScene):
         )
         parabola_surf_red.set_style(fill_opacity=0.1, stroke_color=RED, stroke_opacity=0.3)
         parabola_surf_red.set_fill_by_checkerboard(RED, RED, opacity=0.1)
+
         self.play(
+            FadeIn(dots),
+            Write(map_comain_codomain_tex),
             ReplacementTransform(parabola_surf_blue, parabola_surf_red)
         )
+
+        self.wait(3)
 
         # -------------------
 
@@ -102,8 +104,13 @@ class Conv3D(ThreeDScene):
         dot_midpoint_int_c_pre = Dot3D(dot_midpoint.get_center(), color=YELLOW)
         dot_midpoint_int_f_pre = Dot3D(dot_midpoint.get_center(), color=YELLOW)
 
-        l_conv_p0_tex = Tex(r"$\mathbf{p}_0$", color=GREEN).next_to(dots_chosen[0], LEFT)
-        l_conv_p1_tex = Tex(r"$\mathbf{p}_1$", color=GREEN).next_to(dots_chosen[1], RIGHT)
+        p01_floor_tex = "$\\lfloor (\\mathbf{p}_1 + \\mathbf{p}_2)/2 \\rfloor$"
+        p01_ceil_tex = "$\\lceil (\\mathbf{p}_1 + \\mathbf{p}_2)/2 \\rceil$"
+        p0_tex = "$\\mathbf{p}_0$"
+        p1_tex = "$\\mathbf{p}_1$"
+
+        l_conv_p0_tex = Tex(p0_tex, color=GREEN).next_to(dots_chosen[0], LEFT)
+        l_conv_p1_tex = Tex(p1_tex, color=GREEN).next_to(dots_chosen[1], RIGHT)
         self.add_fixed_orientation_mobjects(l_conv_p0_tex, l_conv_p1_tex)
 
         self.play(
@@ -116,10 +123,12 @@ class Conv3D(ThreeDScene):
             Write(l_conv_p1_tex)
         )
 
+        self.wait(3)
+
         dot_midpoint_int_c = Dot3D(axes.coords_to_point(*parabola_3d(*l_conv_midpoint_int_c)), color=YELLOW)
         dot_midpoint_int_f = Dot3D(axes.coords_to_point(*parabola_3d(*l_conv_midpoint_int_f)), color=YELLOW)
-        l_conv_midpoint_int_c_tex = Tex(r"$\lceil (\mathbf{p}_1 + \mathbf{p}_2)/2 \rceil$", color=YELLOW)
-        l_conv_midpoint_int_f_tex = Tex(r"$\lfloor (\mathbf{p}_1 + \mathbf{p}_2)/2 \rfloor$", color=YELLOW)
+        l_conv_midpoint_int_f_tex = Tex(p01_floor_tex, color=YELLOW)
+        l_conv_midpoint_int_c_tex = Tex(p01_ceil_tex, color=YELLOW)
         self.add_fixed_orientation_mobjects(l_conv_midpoint_int_c_tex, l_conv_midpoint_int_f_tex)
         l_conv_midpoint_int_c_tex.next_to(dot_midpoint_int_c, UP * 7)
         l_conv_midpoint_int_f_tex.next_to(dot_midpoint_int_f, DOWN * 7)
@@ -133,12 +142,19 @@ class Conv3D(ThreeDScene):
             FadeOut(map_comain_codomain_tex),
         )
 
+        self.wait(7)
+
         self.move_camera(phi=75 * DEGREES, theta=-30 * DEGREES)
 
-        l_conv_definition_tex = MathTex(r"f(\mathbf{p}_1</span>) + "
-                                        r"f(\mathbf{p}_2</span>) \geq "
-                                        r"f\left(\lceil (\mathbf{p}_1 + \mathbf{p}_2)/2 \rceil \right) + "
-                                        r"f\left(\lfloor(\mathbf{p}_1 + \mathbf{p}_2)/2 \rfloor \right)").move_to(RIGHT * (-4) + DOWN * 2.5)
+        self.wait(3)
+
+        l_conv_definition_tex = Tex(
+            "$f($", p0_tex, "$) + f($", p1_tex, "$) \\geq f( $", p01_floor_tex, "$) + f($", p01_ceil_tex, "$)$",
+        ).to_corner(DL)
+        l_conv_definition_tex.set_color_by_tex(p0_tex, GREEN)
+        l_conv_definition_tex.set_color_by_tex(p1_tex, GREEN)
+        l_conv_definition_tex.set_color_by_tex(p01_ceil_tex, YELLOW)
+        l_conv_definition_tex.set_color_by_tex(p01_floor_tex, YELLOW)
         self.add_fixed_in_frame_mobjects(l_conv_definition_tex)
 
         self.play(
