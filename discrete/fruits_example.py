@@ -1,3 +1,7 @@
+"""
+Brute-force search of optimal solution for the fruit-buying example described in the presentation. 
+This example was designed to reflect the Gross Substitutes Property in Economics.
+"""
 
 import itertools
 from enum import Enum
