@@ -1,3 +1,8 @@
+"""
+A few functions used in the convexity_1d.py and convexity_2d.py modules.
+"""
+
+
 import numpy as np
 
 
