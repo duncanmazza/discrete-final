@@ -1,3 +1,8 @@
+"""
+Miscellaneous code for learning how to use Manim.
+"""
+
+
 #!/usr/bin/env python
 from manim import *
 import numpy as np
