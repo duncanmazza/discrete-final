@@ -1,3 +1,7 @@
+"""
+Animation showing L-natural convexity for a discrete function on the 2-dimensional integers.
+"""
+
 import math
 from manim import *
 from functions import parabola_3d
