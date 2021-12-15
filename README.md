@@ -1,4 +1,4 @@
-# Discrete Math Final Project Animations: Discrete Convexity Analysis
+# Discrete Convex Analysis
 *A class project by [Duncan Mazza](https://github.com/duncanmazza) and [Colin Snow](https://github.com/colinmsnow) for [MTH2110 Discrete Math](https://olin.smartcatalogiq.com/en/2018-19/Catalog/Courses-Credits-Hours/MTH-Mathematics/2000/MTH2110) at [Olin College](https://olin.edu)*
 
 ## Background
