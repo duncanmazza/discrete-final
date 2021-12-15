@@ -1,3 +1,7 @@
+"""
+Animation showing the convexity definition for a discrete function on the 1-dimensional integers.
+"""
+
 import manim
 import numpy as np
 from manim import Scene, Axes, Write, Create, FadeIn, BLUE, RED, VGroup, Dot, ReplacementTransform, FadeOut
