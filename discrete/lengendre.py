@@ -1,3 +1,11 @@
+"""
+Animations explaining the Legendre-Fenchel transform.
+
+Notes:
+    The Legendre1 scene did not make it into the presentation. The two text-only scenes'
+    contents were replaced by text boxes in the presentation.
+"""
+
 #!/usr/bin/env python
 import math
 from manim import *
