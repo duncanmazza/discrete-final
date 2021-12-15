@@ -1,6 +1,8 @@
 # Discrete Convex Analysis
 *A class project by [Duncan Mazza](https://github.com/duncanmazza) and [Colin Snow](https://github.com/colinmsnow) for [MTH2110 Discrete Math](https://olin.smartcatalogiq.com/en/2018-19/Catalog/Courses-Credits-Hours/MTH-Mathematics/2000/MTH2110) at [Olin College](https://olin.edu)*
 
+<img width="70%" alt="L-natural convexity animation screenshot" src="l_natural_convexity.png"/>
+
 ## Background
 
 Our class project culminated in a presentation to the class on discrete convex analysis, the topic of our exploration. The presentation had an accompanying slide deck which contained various animations that were used to explain the technical definition of L-natural convexity of functions on the 2-dimensional integers and the Legendre-Fenchel transform. These animations were created using the [Manim Community](https://github.com/ManimCommunity/manim) library.
