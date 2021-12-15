@@ -1,4 +1,9 @@
+"""
+Miscellaneous code for learning how to use Manim.
+"""
+
 from manim import *
+
 
 class ThreeDEx(ThreeDScene):
     def construct(self):
